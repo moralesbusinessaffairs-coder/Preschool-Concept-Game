@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Preschool Concepts">
+<meta name="theme-color" content="#6d5dfc">
+<title>Preschool Concept Game</title>
+<style>
+:root{
+  --bg:#fffaf4;--card:#ffffff;--ink:#243045;--muted:#667085;--line:#e7e9ef;
+  --accent:#6d5dfc;--accent-soft:#efedff;--green:#198754;--green-soft:#ecfdf3;
+  --amber:#b7791f;--amber-soft:#fff8e8;--shadow:0 10px 24px rgba(36,48,69,.09)
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+button{font:inherit;touch-action:manipulation}
+main{max-width:980px;margin:auto;padding:14px 14px 30px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,#fff 0%,#f7f4ff 100%);border:1px solid #ddd8ff;border-radius:22px;padding:14px 16px;box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:58px;height:58px;border-radius:17px;background:linear-gradient(145deg,#6d5dfc,#9a8cff);display:grid;place-items:center;color:#fff;font-size:1.65rem;font-weight:900;box-shadow:0 8px 18px rgba(109,93,252,.24)}
+.brand h1{font-size:1.28rem;margin:0;line-height:1.1}.brand p{margin:4px 0 0;color:var(--muted);font-size:.82rem}
+.soundBtn{min-width:112px;min-height:44px;border:1px solid #d7d2ff;border-radius:12px;background:#fff;color:#4338ca;font-weight:800;padding:9px 12px}
+.hero{margin:16px 0 12px;padding:18px;border-radius:20px;background:#fff;border:1px solid var(--line)}
+.hero h2{margin:0 0 6px;font-size:1.22rem}.hero p{margin:0;color:var(--muted);line-height:1.5;font-size:.9rem}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.modeBtn{border:1px solid var(--line);border-radius:16px;background:#fff;min-height:94px;padding:12px 8px;font-weight:850;color:var(--ink);box-shadow:0 4px 10px rgba(36,48,69,.05)}
+.modeBtn .icon{display:block;font-size:2rem;margin-bottom:6px}
+.game{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.gameTop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.kicker{font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:var(--muted)}
+.question{font-size:1.45rem;font-weight:900;margin:4px 0 0;line-height:1.18}
+.progress{font-size:.84rem;font-weight:800;color:var(--muted);white-space:nowrap}
+.listenRow{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+.listenBtn,.homeBtn,.nextBtn{min-height:44px;border-radius:12px;border:1px solid var(--line);padding:9px 14px;font-weight:850;background:#fff}
+.listenBtn{color:#4338ca;border-color:#d7d2ff}.homeBtn{color:#475467}
+.nextBtn{background:var(--accent);border-color:var(--accent);color:#fff;min-width:112px}.nextBtn:disabled{opacity:.35}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{min-height:190px;border:2px solid var(--line);border-radius:18px;background:#fff;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer}
+.choice.correct{border-color:#62c98b;background:var(--green-soft)}.choice.wrong{border-color:#f1be5d;background:var(--amber-soft)}
+.choiceLabel{font-size:.9rem;font-weight:850;margin-top:10px}
+.picture{min-height:118px;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.emoji{line-height:1;display:inline-block;user-select:none}
+.group{display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:7px;max-width:280px}.group .emoji{font-size:2rem}
+.compoundPair{display:flex;align-items:center;justify-content:center;gap:14px;font-size:3.3rem;line-height:1}.plus{font-size:2rem;color:var(--muted);font-weight:900}
+.feedbackBar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:14px;min-height:54px}
+.feedback{font-size:1.05rem;font-weight:900;min-height:28px}.feedback.good{color:var(--green)}.feedback.retry{color:var(--amber)}
+.summary{display:none;background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;text-align:center;box-shadow:var(--shadow)}
+.summary.show{display:block}.summary .big{font-size:3.2rem}.summary h2{margin:6px 0 8px}.summary p{color:var(--muted);margin:0 0 14px}
+.restartBtn{min-height:48px;border:0;border-radius:13px;background:var(--accent);color:#fff;font-weight:900;padding:11px 18px}
+.teacherNote{margin-top:12px;padding:12px 14px;background:#fafafa;border:1px solid var(--line);border-radius:14px;color:var(--muted);font-size:.78rem;line-height:1.45}
+.credit{text-align:center;color:var(--muted);font-size:.78rem;line-height:1.45;margin:20px 0 6px}
+.hidden{display:none!important}
+@media(max-width:760px){.modes{grid-template-columns:1fr 1fr}.choices{grid-template-columns:1fr}.choice{min-height:165px}}
+@media(max-width:460px){main{padding:10px 10px 24px}.header{align-items:flex-start}.soundBtn{min-width:auto;padding:8px 10px}.brand p{display:none}.question{font-size:1.25rem}.modeBtn{min-height:86px}.choice{min-height:150px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header class="header">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">★</div>
+    <div><h1>Preschool Concept Game</h1><p>Visual practice for early math language and compound words</p></div>
+  </div>
+  <button id="soundBtn" class="soundBtn" type="button" aria-pressed="true">🔊 Sound On</button>
+</header>
+
+<section id="homeSection">
+  <div class="hero"><h2>Choose a learning game</h2><p>Large pictures, short spoken directions, and simple preschool feedback.</p></div>
+  <div class="modes">
+    <button type="button" class="modeBtn" data-mode="size"><span class="icon">🐘</span>Big / Small / Little</button>
+    <button type="button" class="modeBtn" data-mode="manyFew"><span class="icon">🍎</span>Many / Few</button>
+    <button type="button" class="modeBtn" data-mode="compare"><span class="icon">🧸</span>More / Less / Equal</button>
+    <button type="button" class="modeBtn" data-mode="compound"><span class="icon">🌻</span>Compound Words</button>
+  </div>
+  <div class="teacherNote">Teacher note: intended for 4-year-old preschool/VPK practice. Quantity comparisons stay within 1–10. No child information is collected or stored.</div>
+</section>
+
+<section id="gameSection" class="game hidden">
+  <div class="gameTop">
+    <div><div id="modeLabel" class="kicker"></div><div id="question" class="question"></div></div>
+    <div id="progress" class="progress"></div>
+  </div>
+  <div class="listenRow">
+    <button id="listenBtn" class="listenBtn" type="button">🔁 Repeat</button>
+    <button id="homeBtn" class="homeBtn" type="button">⌂ Games</button>
+  </div>
+  <div id="choices" class="choices"></div>
+  <div class="feedbackBar">
+    <div id="feedback" class="feedback" aria-live="assertive"></div>
+    <button id="nextBtn" class="nextBtn" type="button" disabled>Next ▶</button>
+  </div>
+</section>
+
+<section id="summarySection" class="summary">
+  <div class="big">🎉</div>
+  <h2>Great work!</h2>
+  <p id="summaryText">You finished this learning game.</p>
+  <button id="restartBtn" type="button" class="restartBtn">Play Again</button>
+</section>
+
+<div class="credit">Concept &amp; design: Jorge Morales + ChatGPT (OpenAI)</div>
+</main>
+
+<script>
+(function(){
+"use strict";
+
+const data={
+size:{label:"Big / Small / Little",questions:[
+{q:"Touch the big elephant.",icon:"🐘",correct:"big",distract:"small"},
+{q:"Touch the little cat.",icon:"🐱",correct:"small",distract:"big"},
+{q:"Touch the small ball.",icon:"⚽",correct:"small",distract:"big"},
+{q:"Touch the big fish.",icon:"🐟",correct:"big",distract:"small"},
+{q:"Touch the little star.",icon:"⭐",correct:"small",distract:"big"},
+{q:"Which apple is bigger?",icon:"🍎",correct:"big",distract:"small"},
+{q:"Which car is smaller?",icon:"🚗",correct:"small",distract:"big"},
+{q:"Touch the big teddy bear.",icon:"🧸",correct:"big",distract:"small"},
+{q:"Touch the small flower.",icon:"🌼",correct:"small",distract:"big"},
+{q:"Which balloon is bigger?",icon:"🎈",correct:"big",distract:"small"}]},
+manyFew:{label:"Many / Few",questions:[
+{q:"Touch many apples.",icon:"🍎",correctCount:8,distractCount:2,correctLabel:"Many apples",distractLabel:"Few apples"},
+{q:"Touch few stars.",icon:"⭐",correctCount:2,distractCount:9,correctLabel:"Few stars",distractLabel:"Many stars"},
+{q:"Touch many balloons.",icon:"🎈",correctCount:7,distractCount:3,correctLabel:"Many balloons",distractLabel:"Few balloons"},
+{q:"Touch few ducks.",icon:"🦆",correctCount:2,distractCount:8,correctLabel:"Few ducks",distractLabel:"Many ducks"},
+{q:"Touch many flowers.",icon:"🌼",correctCount:9,distractCount:3,correctLabel:"Many flowers",distractLabel:"Few flowers"},
+{q:"Touch few cars.",icon:"🚗",correctCount:3,distractCount:8,correctLabel:"Few cars",distractLabel:"Many cars"},
+{q:"Touch many fish.",icon:"🐟",correctCount:8,distractCount:2,correctLabel:"Many fish",distractLabel:"Few fish"},
+{q:"Touch few hearts.",icon:"❤️",correctCount:2,distractCount:7,correctLabel:"Few hearts",distractLabel:"Many hearts"},
+{q:"Touch many blocks.",icon:"🟦",correctCount:9,distractCount:3,correctLabel:"Many blocks",distractLabel:"Few blocks"},
+{q:"Touch few cookies.",icon:"🍪",correctCount:3,distractCount:8,correctLabel:"Few cookies",distractLabel:"Many cookies"}]},
+compare:{label:"More / Less / Equal",questions:[
+{q:"Which group has more apples?",icon:"🍎",left:8,right:3,answer:"left"},
+{q:"Which group has less stars?",icon:"⭐",left:7,right:2,answer:"right"},
+{q:"Which groups are equal?",icon:"🦆",left:4,right:4,answer:"equal"},
+{q:"Which group has more cars?",icon:"🚗",left:3,right:9,answer:"right"},
+{q:"Which group has less flowers?",icon:"🌼",left:2,right:6,answer:"left"},
+{q:"Which groups are equal?",icon:"🐟",left:5,right:5,answer:"equal"},
+{q:"Which group has more balloons?",icon:"🎈",left:7,right:4,answer:"left"},
+{q:"Which group has less cookies?",icon:"🍪",left:8,right:3,answer:"right"},
+{q:"Which groups are equal?",icon:"❤️",left:6,right:6,answer:"equal"},
+{q:"Which group has more blocks?",icon:"🟩",left:4,right:9,answer:"right"}]},
+compound:{label:"Compound Words",questions:[
+{q:"Sun plus flower makes what word?",parts:["☀️","🌻"],correct:"sunflower",distract:"rainbow"},
+{q:"Rain plus bow makes what word?",parts:["🌧️","🎀"],correct:"rainbow",distract:"cupcake"},
+{q:"Cup plus cake makes what word?",parts:["☕","🍰"],correct:"cupcake",distract:"starfish"},
+{q:"Star plus fish makes what word?",parts:["⭐","🐟"],correct:"starfish",distract:"toothbrush"},
+{q:"Tooth plus brush makes what word?",parts:["🦷","🪥"],correct:"toothbrush",distract:"football"},
+{q:"Foot plus ball makes what word?",parts:["🦶","⚽"],correct:"football",distract:"snowman"},
+{q:"Snow plus man makes what word?",parts:["❄️","👨"],correct:"snowman",distract:"butterfly"},
+{q:"Butter plus fly makes what word?",parts:["🧈","🪰"],correct:"butterfly",distract:"bedroom"},
+{q:"Bed plus room makes what word?",parts:["🛏️","🚪"],correct:"bedroom",distract:"mailbox"},
+{q:"Mail plus box makes what word?",parts:["✉️","📦"],correct:"mailbox",distract:"sunflower"}]}
+};
+
+const $=id=>document.getElementById(id);
+const homeSection=$("homeSection"),gameSection=$("gameSection"),summarySection=$("summarySection");
+const choices=$("choices"),question=$("question"),modeLabel=$("modeLabel"),progress=$("progress"),feedback=$("feedback");
+const nextBtn=$("nextBtn"),listenBtn=$("listenBtn"),homeBtn=$("homeBtn"),soundBtn=$("soundBtn"),restartBtn=$("restartBtn");
+
+let currentMode=null,index=0,answered=false,soundOn=true,audioCtx=null,currentQuestion=null;
+
+function pair(a,b){return Math.random()<.5?[a,b]:[b,a]}
+function unlockAudio(){try{const AC=window.AudioContext||window.webkitAudioContext;if(AC&&!audioCtx)audioCtx=new AC();if(audioCtx&&audioCtx.state==="suspended")audioCtx.resume()}catch(e){}}
+function tone(freq,start,duration,gainValue){if(!soundOn)return;unlockAudio();if(!audioCtx)return;const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.type="sine";osc.frequency.value=freq;gain.gain.setValueAtTime(.0001,audioCtx.currentTime+start);gain.gain.exponentialRampToValueAtTime(gainValue,audioCtx.currentTime+start+.02);gain.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+start+duration);osc.connect(gain);gain.connect(audioCtx.destination);osc.start(audioCtx.currentTime+start);osc.stop(audioCtx.currentTime+start+duration+.03)}
+function successSound(){tone(523,0,.14,.05);tone(659,.12,.16,.055);tone(784,.25,.24,.06)}
+function retrySound(){tone(330,0,.12,.025);tone(294,.13,.14,.02)}
+function speak(text,delay=0){if(!soundOn||!("speechSynthesis" in window)||typeof SpeechSynthesisUtterance==="undefined")return;window.speechSynthesis.cancel();setTimeout(()=>{if(!soundOn)return;const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=.78;u.pitch=1.05;u.volume=1;window.speechSynthesis.speak(u)},delay)}
+function setSound(on){soundOn=on;soundBtn.textContent=on?"🔊 Sound On":"🔇 Sound Off";soundBtn.setAttribute("aria-pressed",on?"true":"false");if(!on&&"speechSynthesis" in window)window.speechSynthesis.cancel()}
+
+function makeChoice(content,label,isCorrect){const b=document.createElement("button");b.type="button";b.className="choice";b.setAttribute("aria-label",label);b.innerHTML=content+`<div class="choiceLabel">${label}</div>`;b.addEventListener("click",()=>answer(b,isCorrect));return b}
+function sizeVisual(icon,size){return `<div class="picture"><span class="emoji" style="font-size:${size==="big"?"6rem":"3.3rem"}">${icon}</span></div>`}
+function groupVisual(icon,count){return `<div class="picture"><div class="group">${Array.from({length:count},()=>`<span class="emoji">${icon}</span>`).join("")}</div></div>`}
+function compoundPrompt(parts){return `<div class="picture"><div class="compoundPair"><span>${parts[0]}</span><span class="plus">+</span><span>${parts[1]}</span></div></div>`}
+function wordVisual(word){const map={sunflower:"🌻",rainbow:"🌈",cupcake:"🧁",starfish:"⭐🐟",toothbrush:"🪥",football:"🏈",snowman:"☃️",butterfly:"🦋",bedroom:"🛏️",mailbox:"📫"};return `<div class="picture"><span class="emoji" style="font-size:5rem">${map[word]||"🧩"}</span></div>`}
+
+function answer(button,isCorrect){unlockAudio();if(answered)return;if(isCorrect){answered=true;button.classList.add("correct");feedback.textContent="⭐ Great job!";feedback.className="feedback good";nextBtn.disabled=false;successSound();speak("Great job!",390)}else{button.classList.add("wrong");feedback.textContent="Try again.";feedback.className="feedback retry";retrySound();speak("Try again.",180);setTimeout(()=>button.classList.remove("wrong"),600)}}
+
+function renderQuestion(autoSpeak=true){
+answered=false;nextBtn.disabled=true;feedback.textContent="";feedback.className="feedback";choices.innerHTML="";
+const set=data[currentMode];currentQuestion=set.questions[index];modeLabel.textContent=set.label;question.textContent=currentQuestion.q;progress.textContent=`${index+1} of ${set.questions.length}`;
+
+if(currentMode==="size"){const c=currentQuestion;const a={html:sizeVisual(c.icon,c.correct),label:c.correct==="big"?"Big":"Small / Little",ok:true};const b={html:sizeVisual(c.icon,c.distract),label:c.distract==="big"?"Big":"Small / Little",ok:false};pair(a,b).forEach(o=>choices.appendChild(makeChoice(o.html,o.label,o.ok)))}
+
+if(currentMode==="manyFew"){const c=currentQuestion;const a={html:groupVisual(c.icon,c.correctCount),label:c.correctLabel,ok:true};const b={html:groupVisual(c.icon,c.distractCount),label:c.distractLabel,ok:false};pair(a,b).forEach(o=>choices.appendChild(makeChoice(o.html,o.label,o.ok)))}
+
+if(currentMode==="compare"){const c=currentQuestion;const l={html:groupVisual(c.icon,c.left),label:`${c.left} items`,ok:c.answer==="left"||c.answer==="equal"};const r={html:groupVisual(c.icon,c.right),label:`${c.right} items`,ok:c.answer==="right"||c.answer==="equal"};[l,r].forEach(o=>choices.appendChild(makeChoice(o.html,o.label,o.ok)))}
+
+if(currentMode==="compound"){const c=currentQuestion;const prompt=document.createElement("div");prompt.style.cssText="grid-column:1/-1;background:#fafafa;border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center";prompt.innerHTML=compoundPrompt(c.parts);choices.appendChild(prompt);const a={html:wordVisual(c.correct),label:c.correct,ok:true};const b={html:wordVisual(c.distract),label:c.distract,ok:false};pair(a,b).forEach(o=>choices.appendChild(makeChoice(o.html,o.label,o.ok)))}
+
+if(autoSpeak)speak(currentQuestion.q,180)
+}
+
+function startMode(mode){unlockAudio();currentMode=mode;index=0;homeSection.classList.add("hidden");summarySection.classList.remove("show");gameSection.classList.remove("hidden");renderQuestion(true);window.scrollTo({top:0,behavior:"smooth"})}
+function showHome(){if("speechSynthesis" in window)window.speechSynthesis.cancel();gameSection.classList.add("hidden");summarySection.classList.remove("show");homeSection.classList.remove("hidden");currentMode=null;window.scrollTo({top:0,behavior:"smooth"})}
+function finishMode(){if("speechSynthesis" in window)window.speechSynthesis.cancel();gameSection.classList.add("hidden");summarySection.classList.add("show");$("summaryText").textContent="You finished all 10 activities. Great work!";speak("Great work! You finished the game.",150)}
+
+document.querySelectorAll(".modeBtn").forEach(btn=>btn.addEventListener("click",()=>startMode(btn.dataset.mode)));
+nextBtn.addEventListener("click",()=>{if(!answered)return;if(index>=data[currentMode].questions.length-1)finishMode();else{index++;renderQuestion(true)}});
+listenBtn.addEventListener("click",()=>{unlockAudio();if(!soundOn)setSound(true);if(currentQuestion)speak(currentQuestion.q,0)});
+homeBtn.addEventListener("click",showHome);
+soundBtn.addEventListener("click",()=>{unlockAudio();setSound(!soundOn);if(soundOn&&currentQuestion)speak(currentQuestion.q,100)});
+restartBtn.addEventListener("click",()=>startMode(currentMode||"size"));
+})();
+</script>
+</body>
+</html>
